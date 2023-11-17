@@ -15,6 +15,10 @@ class EtherscanAPI:
             raise ValueError("Invalid network")
 
     def get_source_code(self, contract_address):
+        """
+        Returns the source code of the contract at the given address
+        Returns None if the address is not a contract or if the source code is not verified
+        """
         url = "https://{}.etherscan.io/api?module=contract&action=getsourcecode&address={}&apikey={}".format(
             self.api_name, contract_address, self.api_key
         )
