@@ -15,12 +15,12 @@ def read_file(file_path):
     
 def write_report(file_path):
     report = client.chat.completions.create(
-  model="gpt-4",
-  messages=[
-    {"role": "system", "content": "Analyze and explain the vulnerabilities in this solidity code:"},
-    {"role": "user", "content": read_file(file_path)},
-  ]
-)
+        model="gpt-4-1106-preview",
+        messages=[
+            {"role": "system", "content": "Analyze and explain the vulnerabilities in this solidity code:"},
+            {"role": "user", "content": read_file(file_path)},
+        ]
+    )
     try:
         with open("./report.txt", 'w') as file:
             file.write(str(report.choices[0].message.content))
