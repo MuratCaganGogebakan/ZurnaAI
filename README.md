@@ -28,6 +28,3 @@ zurnaai audit [options] [smart_contract]
 Contributing
 
 We welcome contributions from the community. Please read our contributing guide for more information on how you can contribute to ZurnaAI.
-License
-
-[Specify the license under which ZurnaAI is released]
