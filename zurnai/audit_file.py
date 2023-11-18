@@ -1,29 +1,50 @@
+import os
+import logging
 from openai import OpenAI
 from dotenv import load_dotenv
+from zurnai.split_file import split_file
 
 load_dotenv()
 
 client = OpenAI()
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
-def read_file(file_path):
+SYSTEM_PROMPT = """
+Analyze and explain the vulnerabilities in this solidity code chunk, if there is any, other wise return "No vulnerabilities found".
+Since the code is split into chunks, if you find a vulnerability, please explain how it can be exploited. If there is no vulnerabilities found in the code, just return "No vulnerabilities found".
+No need to explain the code or why you can't find any vulnerabilities. Keep you explanation short and concise. 
+Don't talk about the incomplete code, we alreade know that hte code given to you is just a chunk of the whole code.
+""".strip()
+
+
+def append_to_file(file_path, text):
     try:
-        with open(file_path, 'r') as file:
-            return file.read()
-    except Exception as e:
-        print(f"An error occurred while reading the file: {e}")
-        return None
-    
+        with open(file_path, "a+") as file:
+            file.write(text)
+    except:
+        print("Exception occured while writing to file")
+
+
 def write_report(file_path):
-    report = client.chat.completions.create(
-        model="gpt-4-1106-preview",
-        messages=[
-            {"role": "system", "content": "Analyze and explain the vulnerabilities in this solidity code:"},
-            {"role": "user", "content": read_file(file_path)},
-        ]
-    )
-    try:
-        with open("./report.txt", 'w') as file:
-            file.write(str(report.choices[0].message.content))
-    except Exception as e:
-        print(f"An error occurred while writing the file: {e}")
-        return None
+    splits = split_file(file_path)
+    logger.log(logging.INFO, "Split file into %s chunks", len(splits))
+    if os.path.exists("report.md"):
+        os.remove("report.md")
+    logger.log(logging.INFO, "Report file is reset, writing report")
+    append_to_file("report.md", f"# Report for {file_path}\n\n")
+    append_to_file("report.md", "## Vulnerabilities found\n\n")
+    for chunk in splits:
+        logger.log(logging.INFO, "Writing report for chunk %s", chunk)
+        append_to_file("report.md", "### Code chunk\n\n")
+        append_to_file("report.md", f"```solidity\n{chunk}\n```\n\n")
+        logger.log(logging.INFO, "Analyzing...")
+        report = client.chat.completions.create(
+            model="gpt-4-1106-preview",
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": chunk},
+            ],
+        )
+        append_to_file("report.md", "### Report\n\n")
+        append_to_file("report.md", report.choices[0].message.content + "\n\n")
