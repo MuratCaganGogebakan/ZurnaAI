@@ -20,10 +20,7 @@ Usage
 
 Provide a simple example or instructions on how to use ZurnaAI for auditing smart contracts.
 
-shell
-
-# Example usage command
-zurnaai audit [options] [smart_contract]
+Our helper contract is deployed on Scroll Sepolia with address: 0xfFde49Aa4aACA16De9d5619C44089659A9515C5f
 
 Contributing
 
