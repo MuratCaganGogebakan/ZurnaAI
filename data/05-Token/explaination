@@ -1,0 +1,5 @@
+In older versions of Solidity overflows and underflows didn't revert the tx. In this case, an underflow can be achieved in the function transfer.
+
+If we send a _value greater than the balance we have, there will be an underflow, leading to a huge number.
+
+So, what we have to do is send, lets say 21 tokens to any other address, and then our balance will significantly increase!
