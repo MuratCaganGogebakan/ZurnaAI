@@ -13,4 +13,4 @@ def split_file(file_path):
         text = f.read()
     docs = sol_splitter.create_documents([text])
     docs = [doc.page_content for doc in docs]
-    return docs
+    return text, docs

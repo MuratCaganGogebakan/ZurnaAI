@@ -27,7 +27,7 @@ def append_to_file(file_path, text):
 
 
 def write_report(file_path):
-    splits = split_file(file_path)
+    whole_code, splits = split_file(file_path)
     logger.log(logging.INFO, "Split file into %s chunks", len(splits))
     if os.path.exists("report.md"):
         os.remove("report.md")
@@ -48,3 +48,17 @@ def write_report(file_path):
         )
         append_to_file("report.md", "### Report\n\n")
         append_to_file("report.md", report.choices[0].message.content + "\n\n")
+
+    append_to_file("report.md", "## Analysis as a whole\n\n")
+    append_to_file("report.md", "### Code\n\n")
+    append_to_file("report.md", f"```solidity\n{whole_code}\n```\n\n")
+    logger.log(logging.INFO, "Analyzing...")
+    report = client.chat.completions.create(
+        model="gpt-4-1106-preview",
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": whole_code},
+        ],
+    )
+    append_to_file("report.md", "### Report\n\n")
+    append_to_file("report.md", report.choices[0].message.content + "\n\n")
