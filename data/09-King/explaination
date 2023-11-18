@@ -1,0 +1,3 @@
+The vulnerable line is king.transfer(msg.value);.
+
+We can create a contract that reverts when it receives some ether. So, when transfer is executed it will revert the tx, making the contract not usable anymore.

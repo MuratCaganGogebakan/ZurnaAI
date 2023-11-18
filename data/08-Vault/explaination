@@ -1,0 +1,4 @@
+The issue is that the password is stored in the contract as private. Nevertheless, it is possible to access private storage variables in contracts, if we know the slot they are in:
+
+const password = await ethers.provider.getStorageAt(contract.address, 1);
+

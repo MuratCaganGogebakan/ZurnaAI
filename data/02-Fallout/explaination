@@ -1,0 +1,3 @@
+In previous versions of Solidity there was no constructor function, so it had to be named with the same name as the contract.
+
+In this case the "constructor" had a typo and was named Fal1out. Just call the function to gain ownership of the contract.
