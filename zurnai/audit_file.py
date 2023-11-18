@@ -32,7 +32,8 @@ def write_report(file_path):
     if os.path.exists("report.md"):
         os.remove("report.md")
     logger.log(logging.INFO, "Report file is reset, writing report")
-    append_to_file("report.md", f"# Report for {file_path}\n\n")
+    file_name = file_path.split("/")[-1]
+    append_to_file("report.md", f"# Report for {file_name}\n\n")
     append_to_file("report.md", "## Vulnerabilities found\n\n")
     for chunk in splits:
         logger.log(logging.INFO, "Writing report for chunk %s", chunk)

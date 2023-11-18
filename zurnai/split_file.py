@@ -4,7 +4,7 @@ from langchain.text_splitter import (
 )
 
 sol_splitter = RecursiveCharacterTextSplitter.from_language(
-    Language.SOL, chunk_size=128, chunk_overlap=0
+    Language.SOL, chunk_size=200, chunk_overlap=0
 )
 
 

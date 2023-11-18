@@ -10,7 +10,7 @@ file_name = "testCode.sol"
 if len(sys.argv) > 1:
     file_name = sys.argv[1]
 # print(split_file("./testCode.sol"))
-write_report("./testCode.sol")
+write_report(file_name)
 
 # source_finder = EtherscanAPI(os.getenv('ETHERSCAN_API_KEY'), "mainnet")
 # print(source_finder.get_source_code("0xcD35E248168665A255243f819a2D534c034C142f"))
